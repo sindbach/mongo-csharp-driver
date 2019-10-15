@@ -60,6 +60,15 @@ namespace MongoDB.Bson.Tests.Serialization.Conventions
             }
         }
 
+        private class TestClassD
+                {
+            public TestClassD(int a) { A = a; }
+
+            public static TestClassD Default {get; } = new TestClassD(0);
+
+            public int A { get; }
+        }
+
         [Fact]
         public void Anonymous_class_should_map_correctly()
         {
@@ -125,5 +134,16 @@ namespace MongoDB.Bson.Tests.Serialization.Conventions
             Assert.True(classMap.HasCreatorMaps);
             Assert.Equal(1, classMap.CreatorMaps.Count());
         }
+                
+        [Fact]
+        public void TestNoDefaultConstructorClassMapConventionWithTestClassD()
+        {
+            var convention = new ImmutableTypeClassMapConvention();
+            var classMap = new BsonClassMap<TestClassD>();
+            convention.Apply(classMap);
+            Assert.True(classMap.HasCreatorMaps);
+            Assert.Equal(1, classMap.CreatorMaps.Count());
+        }
+
     }
 }
