@@ -61,7 +61,7 @@ namespace MongoDB.Bson.Tests.Serialization.Conventions
         }
 
         private class TestClassD
-                {
+        {
             public TestClassD(int a) { A = a; }
 
             public static TestClassD Default {get; } = new TestClassD(0);
