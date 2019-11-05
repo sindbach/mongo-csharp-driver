@@ -64,9 +64,18 @@ namespace MongoDB.Bson.Tests.Serialization.Conventions
         {
             public TestClassD(int a) { A = a; }
 
-            public static TestClassD Default {get; } = new TestClassD(0);
+            public static TestClassD Default => new TestClassD(0);
 
             public int A { get; }
+        }
+
+        private class TestClassE
+        {
+            public TestClassE(int a) { A = a; }
+
+            public static TestClassE Default => new TestClassE(0);
+
+            public int A { get; set; }
         }
 
         [Fact]
@@ -145,5 +154,14 @@ namespace MongoDB.Bson.Tests.Serialization.Conventions
             Assert.Equal(1, classMap.CreatorMaps.Count());
         }
 
+        [Fact]
+        public void TestNoDefaultConstructorClassMapConventionWithTestClassE()
+        {
+            var convention = new ImmutableTypeClassMapConvention();
+            var classMap = new BsonClassMap<TestClassE>();
+            convention.Apply(classMap);
+            Assert.False(classMap.HasCreatorMaps);
+            Assert.Equal(0, classMap.CreatorMaps.Count());
+        }
     }
 }
